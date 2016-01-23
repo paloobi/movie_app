@@ -3,33 +3,45 @@
 {% block content %}
   
   <div class="page-header">
-    <h1>Movies R Us{% if id %}<small>{{id}}</small>{% endif %}</h1>
+    <h1>Movies R Us{% if subtitle %}<small>{{subtitle}}</small>{% endif %}</h1>
   </div>
   <div class="row">
     <div class="col-md-3">
-      <img src="https://pbs.twimg.com/profile_images/2450268678/olxp11gnt09no2y2wpsh_normal.jpeg"><br>
-      <b>Your Name</b><br>
-      100 followers
+      <h2>Search for Movies</h2>
       {% if showForm %}
         <form action="/search" method="POST">
-          <label for='id_field'>Tweet as:</label>
-          <input name='id' type="text" id="id_field" value="{% if id %}{{id}}{% endif %}"/>
-          <label for='name_field'>Name:</label>
-          <input name='name' type="text" id="name_field" value="{% if name %}{{name}}{% endif %}"/>
-          <label for="text_field">What do you want to say?</label>
-          <input name="text" type="text" id="text_field"/>
+
+          <label for='movie_field'>Movie Name:</label>
+          <input name='movie' type="text" id="movie_field" value="{% if movie %}{{movie.name}}{% endif %}" />
+
+          <label for="actor_field">Actor:</label>
+          <input name="actor" type="text" id="actor_field" value="{% if actor %}{{actor.first_name + ' ' + actor.last_name}}{% endif %}"/>
+
+          <label for='director_field'>Director:</label>
+          <input name='director' type="text" id="director_field" value="{% if director %}{{director.first_name + ' ' + director.last_name}}{% endif %}"/>
+
+          <label for="year_field">Year:</label>
+          <input name="year" type="text" id="year_field" value="{% if year %}{{year}}{% endif %}"/>
+
           <input type="submit" value="Submit"/>
+
         </form>
       {% endif %}
     </div>
     <div class="col-md-9">
     
       <!-- display tweets here -->
-      {% for tweet in tweets %}
-      <div class='tweet'>
-        <img class='user-photo' src='/images/{{tweet.id|replace("@", "")}}.png'>
-        <h4>{{tweet.name}}<small><a href='/users/{{tweet.id|replace("@","")}}'>{{tweet.id}}</a></small></h4>
-        <p><a href="/tweet/{{tweet.tweetid}}">{{tweet.text}}</a></p>
+      {% for movie in movies %}
+      <div class='movie'>
+        <h3><a href='/movies/{{movie.id}}'>{{movie.name}}</a></h3>
+        <h4>Directed By:<h4>
+          <p><a href="/director/{{movie.director.id}}">{{movie.director}}</a></p>
+        <h4>Actors:</h4>
+          <ul>
+          {% for actor in movie.actors %}
+            <li><a href="/director/{{actor.id}}">{{actor.first_name + " " + actor.last_name}}</a></li>
+          {% endfor %}
+          </ul>
       </div>
       {% endfor %}
       
