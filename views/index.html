@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  
+  <div class="page-header">
+    <h1>Movies R Us{% if id %}<small>{{id}}</small>{% endif %}</h1>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <img src="https://pbs.twimg.com/profile_images/2450268678/olxp11gnt09no2y2wpsh_normal.jpeg"><br>
+      <b>Your Name</b><br>
+      100 followers
+      {% if showForm %}
+        <form action="/search" method="POST">
+          <label for='id_field'>Tweet as:</label>
+          <input name='id' type="text" id="id_field" value="{% if id %}{{id}}{% endif %}"/>
+          <label for='name_field'>Name:</label>
+          <input name='name' type="text" id="name_field" value="{% if name %}{{name}}{% endif %}"/>
+          <label for="text_field">What do you want to say?</label>
+          <input name="text" type="text" id="text_field"/>
+          <input type="submit" value="Submit"/>
+        </form>
+      {% endif %}
+    </div>
+    <div class="col-md-9">
+    
+      <!-- display tweets here -->
+      {% for tweet in tweets %}
+      <div class='tweet'>
+        <img class='user-photo' src='/images/{{tweet.id|replace("@", "")}}.png'>
+        <h4>{{tweet.name}}<small><a href='/users/{{tweet.id|replace("@","")}}'>{{tweet.id}}</a></small></h4>
+        <p><a href="/tweet/{{tweet.tweetid}}">{{tweet.text}}</a></p>
+      </div>
+      {% endfor %}
+      
+    </div>
+  </div>
+    
+{% endblock %}
